@@ -1,60 +1,49 @@
 package ar.edu.unlam.dominio;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 
 public class EntradasTest {
-
+	
+	
 	@Test
 	public void dadoQueQueremosCrearLaClaseEntradaCuandoLaInstancioDaResultadoPositivo() {
-
-		Double precio = 500.0;
-
+		
+		Double precio = 10.5;
+		Boolean promocionesAplicadas = false;
+		
 		Entrada entrada = new Entrada(precio);
-
-		Double precioEsperado = 500.0;
+		
+		Double precioEsperado = 10.5;
 		Double precioObtenido = entrada.getPrecio();
 		assertEquals(precioEsperado, precioObtenido);
-
-		assertTrue(entrada.getPromociones().isEmpty());
+		Boolean promocionesAplicadasEsperadas = false;
+		Boolean promocionesAplicadasObtenidas = entrada.getPromociones();
+		assertEquals(promocionesAplicadasEsperadas, promocionesAplicadasObtenidas);
 	}
+	
+	
 	@Test
-	public void dadoQueExisteUnaEntrada2DLaMismaNoTieneRecargoYAdemasNoTienePromociones() {
-		Double precio = 500.0;
-		Entrada2D entrada = new Entrada2D(precio);
-
-		Double precioEsperado = 500.0;
-		Double precioObtenido = entrada.getPrecioFinal();
-
-		assertEquals(precioEsperado, precioObtenido);
-
-		assertTrue(entrada.getPromociones().isEmpty());
-
+	public void dadoQueExisteUnaFuncionCuandoSeInstancieQueElResultadoSeaPositivo() {
+		
+		Double precio = 10.5;
+		Boolean promocionesAplicadas = false;
+		
+		Entrada entrada = new Entrada(precio);
+		
+		Pelicula pelicula = null;
+		Sala sala = null;
+		LocalDateTime fechaHora = null;
+		Double precioBase = entrada.getPrecio();
+		
+		Funcion funcion = new Funcion(pelicula, sala, fechaHora, precioBase);
 	}
-	@Test
-	public void dadoQueExisteUnaEntrada3DLaMismaTieneRecargoYAdemasNoTienePromociones() {
-		Double precio = 500.0;
-		Entrada3D entrada = new Entrada3D(precio);
-
-		Double precioEsperado = 750.0;
-		Double precioObtenido = entrada.getPrecioFinal();
-
-		assertEquals(precioEsperado, precioObtenido);
-
-		assertTrue(entrada.getPromociones().isEmpty());
-	}
-	@Test
-	public void dadoQueExisteUnaEntradaVIPLaMismaTieneRecargoYAdemasNoTienePromociones() {
-		Double precio = 500.0;
-		EntradaVIP entrada = new EntradaVIP(precio);
-
-		Double precioEsperado = 900.0;
-		Double precioObtenido = entrada.getPrecioFinal();
-
-		assertEquals(precioEsperado, precioObtenido);
-
-		assertTrue(entrada.getPromociones().isEmpty());
-	}
+	
+	
+	
+	
+	
 }
