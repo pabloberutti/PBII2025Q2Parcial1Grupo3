@@ -1,20 +1,35 @@
 package ar.edu.unlam.dominio;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Entrada {
 
 	private Double precio;
-	private Boolean promocionesAplicadas;
+	private Set<Promocion> promociones;
 
-	public Entrada(Double precio, Boolean promocionesAplicadas) {
+	public Entrada(Double precio) {
 		this.precio = precio;
-		this.promocionesAplicadas = promocionesAplicadas;
+		this.promociones = new HashSet<>();
+	}
+
+	public void aplicarPromocion(Promocion promocion) {
+		promociones.add(promocion);
 	}
 
 	public Double getPrecio() {
 		return precio;
 	}
 
-	public Boolean getPromocionesAplicadas() {
-		return promocionesAplicadas;
+	public Double getPrecioFinal() {
+		Double precioFinal = precio;
+		for (Promocion promo : promociones) {
+			precioFinal = promo.aplicar(precioFinal);
+		}
+		return precioFinal;
+	}
+
+	public Set<Promocion> getPromociones() {
+		return promociones;
 	}
 }
