@@ -3,7 +3,7 @@ package ar.edu.unlam.dominio;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Entrada {
+public abstract class Entrada {
 
 	private Double precio;
 	private Set<Promocion> promociones;
