@@ -4,5 +4,6 @@ public enum Genero {
 
 	CIENCIA_FICCION,
 	TERROR,
-	COMEDIA
+	COMEDIA, 
+	ACCION
 }

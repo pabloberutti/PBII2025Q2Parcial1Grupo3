@@ -6,7 +6,7 @@ public class EntradaVIP extends Entrada{
 		super(precio + COSTO_VIP);
 	}
 	
-	private static final double COSTO_VIP = 400;
+	private static final double COSTO_VIP = 50;
 
 	
 }

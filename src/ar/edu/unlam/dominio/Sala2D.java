@@ -6,5 +6,4 @@ public class Sala2D extends Sala{
 		super(capacidad, "Proyeccion digital 2D estandar");
 	}
 
-
 }
