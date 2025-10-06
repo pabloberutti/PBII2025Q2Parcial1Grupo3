@@ -2,7 +2,7 @@ package ar.edu.unlam.dominio;
 
 public class PagoTarjeta implements Promocion {
 
-    private Double recargo;
+	private Double recargo;
 
     public PagoTarjeta(Double recargo) {
         this.recargo = recargo;
