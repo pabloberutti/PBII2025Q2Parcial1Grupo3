@@ -1,19 +1,21 @@
 package ar.edu.unlam.dominio;
 
-public class Sala {
+public abstract class Sala {
 
 	Integer capacidad;
+	private String tecnologia;
 
-	public Sala(Integer capacidad) {
+	public Sala(Integer capacidad, String tecnologia) {
 		this.capacidad = capacidad;
+		this.tecnologia = tecnologia;
 	}
 
 	public Integer getCapacidad() {
 		return capacidad;
 	}
 
-	public void setCapacidad(Integer capacidad) {
-		this.capacidad = capacidad;
+	public String getTecnologia() {
+		return this.tecnologia;
 	}
 
 }
