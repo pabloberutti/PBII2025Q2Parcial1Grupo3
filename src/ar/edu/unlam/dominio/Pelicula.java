@@ -12,4 +12,10 @@ public class Pelicula {
 		this.genero = genero;
 	}
 
+	public String getTitulo() {
+		return titulo;
+	}
+
+	
+
 }

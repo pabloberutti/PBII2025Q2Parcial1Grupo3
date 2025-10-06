@@ -32,7 +32,7 @@ public class GestorDeCine {
 		for (Funcion funcion : funciones) {
 			if (funcion.getFechaHora().getDayOfWeek() == dia) {
 				for (Entrada e : funcion.getEntradas()) {
-					totalRecaudacion += e.getPrecioFinal();
+					totalRecaudacion += funcion.calcularPrecioFinal(e);
 				}
 			}
 		}
@@ -50,6 +50,24 @@ public class GestorDeCine {
 			}
 		}
 		return listaFuncionesEnSala;
+	}
+
+	public ArrayList<Funcion> funcionesPorPelicula(String titulo) {
+		ArrayList<Funcion> funcionesPorPelicula = new ArrayList<>();
+		
+		for (Funcion funcion : this.funciones) {
+			Pelicula pelicula = funcion.getPelicula();
+			String tituloDeLaPelicula;
+			
+			if (pelicula != null) {
+				tituloDeLaPelicula = pelicula.getTitulo();
+				if (tituloDeLaPelicula != null && tituloDeLaPelicula.equals(titulo)) {
+					funcionesPorPelicula.add(funcion);
+				}
+			}
+		}
+		
+		return funcionesPorPelicula;
 	}
 
 }

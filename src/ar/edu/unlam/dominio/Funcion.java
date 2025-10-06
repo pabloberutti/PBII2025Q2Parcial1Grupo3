@@ -42,7 +42,7 @@ public class Funcion {
 		Boolean esNocturna = false;
 		// Pasamos la fechaHora a solo hora y le decimos que si esa hora está despues de
 		// las 20, es nocturna.
-		if (this.fechaHora.toLocalTime().isAfter(LocalTime.of(20, 0))) {
+		if (this.fechaHora.toLocalTime().isAfter(LocalTime.of(19, 59))) {
 			esNocturna = true;
 		}
 
@@ -59,6 +59,28 @@ public class Funcion {
 
 		return esMiercoles;
 	}
+	
+	public Double calcularPrecioConReglas() {
+		Double precioConReglas = this.precioBase;
+		if (esNocturna()) {
+			precioConReglas += (precioConReglas*10)/100;
+		}
+		if (esMiercoles()) {
+			precioConReglas -= (precioConReglas*50)/100;
+		}
+		return precioConReglas;
+	}
+	
+	public Double calcularPrecioFinal(Entrada entrada) {
+		// Esto hace que se aplique el desc/recargo por dia/horario
+		Double precioFinal = this.calcularPrecioConReglas();
+		
+		// Falta que aplique por promocion de efectivo/tarjeta
+		for (Promocion promocion : entrada.getPromociones()) {
+			precioFinal = promocion.aplicar(precioFinal);
+		}
+		return precioFinal;
+	}
 
 	public boolean agregarEntrada(Entrada entrada) {
 
@@ -73,7 +95,7 @@ public class Funcion {
 	public List<Entrada> getEntradas() {
 		return entradas;
 	}
-	
+
 	
 
 }
