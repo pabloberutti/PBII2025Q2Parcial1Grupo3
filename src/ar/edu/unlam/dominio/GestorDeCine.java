@@ -40,4 +40,16 @@ public class GestorDeCine {
 
 	}
 
+	public List<Funcion> buscarFuncionesEnSala(Sala sala) {
+
+		List<Funcion> listaFuncionesEnSala = new ArrayList<>();
+
+		for (Funcion funcion : funciones) {
+			if (funcion.getSala().equals(sala)) {
+				listaFuncionesEnSala.add(funcion);
+			}
+		}
+		return listaFuncionesEnSala;
+	}
+
 }
