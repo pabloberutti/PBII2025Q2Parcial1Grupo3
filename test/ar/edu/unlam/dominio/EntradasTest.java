@@ -417,21 +417,24 @@ public class EntradasTest {
 	@Test
 	public void dadoQueUnaFuncionEsNocturnaYEsMiercolesSeCalculaPrecioCorrecto() {
 		GestorDeCine gestor = new GestorDeCine();
-	
+
 		Pelicula pelicula = new Pelicula("IT", 120, Genero.TERROR);
 		Sala2D sala2d = new Sala2D(100);
 		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 8, 22, 0, 0);
 		Double precioBase = 150.0;
-		
+
 		Funcion funcion = new Funcion(pelicula, sala2d, fechaHora, precioBase);
+
+		gestor.agregarFuncion(funcion);
 
 		Boolean esMiercoles = funcion.esMiercoles();
 		assertTrue(esMiercoles);
 		Boolean esNocturna = funcion.esNocturna();
 		assertTrue(esNocturna);
-		
+
 		Entrada2D entrada = new Entrada2D(150.0);
-		
+		funcion.agregarEntrada(entrada);
+
 		Double precioEsperado = (precioBase * 1.10) * 0.5;
 
 		Double precioObtenido = funcion.calcularPrecioFinal(entrada);
@@ -439,4 +442,69 @@ public class EntradasTest {
 		assertEquals(precioEsperado, precioObtenido);
 
 	}
+
+	@Test
+	public void dadoQueUnaFuncionTieneMuchasEntradasLaRecaudacionPorDiaDebeSumarTodas() {
+		GestorDeCine gestor = new GestorDeCine();
+
+		Pelicula pelicula = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
+		Sala2D sala2d = new Sala2D(300);
+		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 6, 15, 0, 0);
+		Double precioBase = 150.0;
+
+		Funcion funcion = new Funcion(pelicula, sala2d, fechaHora, precioBase);
+
+		gestor.agregarFuncion(funcion);
+
+		Entrada2D entradaUno = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaUno);
+		Entrada2D entradaDos = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaDos);
+		Entrada2D entradaTres = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaTres);
+		Entrada2D entradaCuatro = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaCuatro);
+		Entrada2D entradaCinco = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaCinco);
+
+		Double recaudacionEsperado = 750.0;
+		Double recaudacionObtenido = gestor.recaudacionPorDia(fechaHora.getDayOfWeek());
+
+		assertEquals(recaudacionEsperado, recaudacionObtenido);
+	}
+	@Test
+	public void dadoQueHayVariasFuncionesElMismoDiaLaRecaudacionDebeSerLaSumaDeTodas() {
+		GestorDeCine gestor = new GestorDeCine();
+
+		Pelicula pelicula = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
+		Sala2D sala2d = new Sala2D(300);
+		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 6, 15, 0, 0);
+		Double precioBase = 100.0;
+
+		Funcion funcion = new Funcion(pelicula, sala2d, fechaHora, precioBase);
+
+		gestor.agregarFuncion(funcion);
+		
+		Entrada2D entradaUno = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaUno);
+		Entrada2D entradaDos = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaDos);
+		
+		Pelicula peliculaDos = new Pelicula("It", 120, Genero.TERROR);
+		Sala3D sala3d = new Sala3D(300);
+		Double precioBaseDos = 150.0;
+
+		Funcion funcionDos = new Funcion(peliculaDos, sala3d, fechaHora, precioBaseDos);
+
+		gestor.agregarFuncion(funcionDos);
+		
+		Entrada3D entrada = new Entrada3D(300.0);
+		funcionDos.agregarEntrada(entrada);
+		
+		Double recaudacionEsperado = 350.0;
+		Double recaudacionObtenido = gestor.recaudacionPorDia(fechaHora.getDayOfWeek());
+		
+		assertEquals(recaudacionEsperado, recaudacionObtenido,0.01);
+	}
+	
 }
