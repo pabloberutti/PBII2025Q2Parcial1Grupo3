@@ -16,6 +16,24 @@ public class Pelicula {
 		return titulo;
 	}
 
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public Integer getDuracion() {
+		return duracion;
+	}
+
+	public void setNombre(String nombreDeLaPeliculaACambiarNuevo) {
+		this.titulo = nombreDeLaPeliculaACambiarNuevo;
+	}
+
+	public void setGenero(Genero nuevoGeneroAElegir) {
+		this.genero = nuevoGeneroAElegir;
+	}
+
+	
+
 	
 
 }
