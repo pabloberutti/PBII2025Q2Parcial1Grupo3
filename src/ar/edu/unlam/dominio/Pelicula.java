@@ -16,6 +16,10 @@ public class Pelicula {
 		return titulo;
 	}
 
+	public Integer getDuracion() {
+		return duracion;
+	}
+
 	
 
 }

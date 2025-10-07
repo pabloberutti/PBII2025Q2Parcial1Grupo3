@@ -96,6 +96,13 @@ public class Funcion {
 		return entradas;
 	}
 
+	public LocalDateTime getHoraFin() {
+	    Integer duracionEnMinutos = this.pelicula.getDuracion(); 
+	    LocalDateTime horaFin = this.fechaHora.plusMinutes(duracionEnMinutos);
+
+	    return horaFin;
+	}
+
 	
 
 }
