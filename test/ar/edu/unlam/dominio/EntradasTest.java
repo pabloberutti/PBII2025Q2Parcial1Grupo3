@@ -2,6 +2,7 @@ package ar.edu.unlam.dominio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
@@ -520,6 +521,34 @@ public class EntradasTest {
 		Double recaudacionObtenido = gestor.recaudacionPorDia(fechaHora.getDayOfWeek());
 		
 		assertEquals(recaudacionEsperado, recaudacionObtenido,0.01);
+	}
+	
+	@Test
+	public void dadoQueHayQueMostrarLosGenerosDeLasPeliculasHayQueAgregarElNombreDeCadaGeneroComoDescripcionYHacerElMetodoNecesarioParaMostrarlo() {
+		String opcionesDeGeneros = null;
+		opcionesDeGeneros += Genero.obtenerOpcionesDeGenero();
+		assertNotNull(opcionesDeGeneros);
+	}
+	
+	@Test
+	public void dadoQueQuieroCambiarElNombreDeUnaPeliculaPrimeroNecesitoQueMeMuestreUnArrayConLasPeliculasCreadas() {
+		GestorDeCine gestor = new GestorDeCine();
+		
+		Pelicula pelicula = new Pelicula("Son Como niños", 150, Genero.COMEDIA);
+		Pelicula pelicula2 = new Pelicula("it", 120, Genero.TERROR);
+		Pelicula pelicula3 = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
+		gestor.agregarPelicula(pelicula);
+		gestor.agregarPelicula(pelicula2);
+		gestor.agregarPelicula(pelicula3);
+		
+		List<Pelicula> peliculasCreadas = new ArrayList<>();
+		
+		peliculasCreadas = gestor.getPeliculas();
+		
+		Integer peliculasCreadasEsperadas = 3;
+		Integer peliculasCreadasObtenidas = peliculasCreadas.size();
+		assertEquals(peliculasCreadasEsperadas, peliculasCreadasObtenidas);
+		
 	}
 	
 }

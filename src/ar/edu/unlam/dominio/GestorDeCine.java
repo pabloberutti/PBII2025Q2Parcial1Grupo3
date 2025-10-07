@@ -70,4 +70,8 @@ public class GestorDeCine {
 		return funcionesPorPelicula;
 	}
 
+	public List<Pelicula> getPeliculas() {
+		return peliculas;
+	}
+
 }

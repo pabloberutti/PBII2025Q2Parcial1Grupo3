@@ -2,7 +2,9 @@ package ar.edu.unlam.interfaz;
 
 import java.util.Scanner;
 
+import ar.edu.unlam.dominio.Genero;
 import ar.edu.unlam.dominio.GestorDeCine;
+import ar.edu.unlam.dominio.Pelicula;
 
 public class EntradasInterfaz {
 	static Scanner teclado = new Scanner(System.in);
@@ -190,19 +192,19 @@ public class EntradasInterfaz {
 
 			case 1:
 				System.out.println("--Agregar Pelicula--");
-				//Logica
+				agregarPelicula(gestor);
 				break;
 			case 2:
 				System.out.println("--Modificar nombre de pelicula--");
-				//Logica
+				modificarNombreDePelicula(gestor);
 				break;
 			case 3:
 				System.out.println("--Cambiar genero--");
-				//Logica
+				modificarGeneroDePelicula(gestor);
 				break;
 			case 4:
 				System.out.println("--Eliminar pelicula--");
-				//Logica
+				eliminarPelicula(gestor);
 				break;
 			case 5:
 				System.out.println("--Volviendo al menu principal--");
@@ -216,6 +218,170 @@ public class EntradasInterfaz {
 		}while(opcion != 5);
 		
 		
+	}
+
+	private static void eliminarPelicula(GestorDeCine gestor) {
+		//Logica
+		mostrarPeliculasCreadas(gestor);
+		
+		teclado.nextLine(); // Limpieza de buffer
+		
+		System.out.println("\nIngrese el nombre de la pelicula a elimnar: ");
+		String nombreDeLaPeliculaAEliminar = teclado.nextLine().trim();
+		
+		Boolean seElimino = false;
+		
+//				Intenté hacer el bucle de la siguiente manera pero me tiró un java.util.ConcurrentModificationException
+//				for (Pelicula cadaPelicula : gestor.getPeliculas()) {
+//					if (cadaPelicula.getTitulo().equals(nombreDeLaPeliculaAEliminar)) {
+//						gestor.getPeliculas().remove(cadaPelicula);
+//						seElimino = true;
+//					}
+//				}
+//				Aparentemente, no puedo eliminar un objeto en medio del bucle... la solucion que encontré es hacerlo en un for convencional
+		
+		for (int i = 0; i < gestor.getPeliculas().size(); i++) {
+			Pelicula cadaPelicula = gestor.getPeliculas().get(i);
+			if (cadaPelicula.getTitulo().equals(nombreDeLaPeliculaAEliminar)) {
+				gestor.getPeliculas().remove(i);
+				seElimino = true;
+			}
+		}
+		
+		if (!seElimino) {
+			System.out.println("La pelicula no se ha eliminado. Intente nuevamente.");
+		} else {
+			System.out.println("La pelicula se ha eliminado exitosamente.");
+		}
+	}
+
+	private static void modificarGeneroDePelicula(GestorDeCine gestor) {
+		//Logica
+		mostrarPeliculasCreadas(gestor);
+		
+		teclado.nextLine(); // Limpieza de buffer
+		
+		System.out.println("\nIngrese el nombre de la pelicula a cambiar el genero: ");
+		String nombreDeLaPeliculaACambiarElGenero = teclado.nextLine().trim();
+		
+		Genero nuevoGeneroAElegir = elegirGenero();
+		
+		Boolean seCambio2 = false;
+		for (Pelicula cadaPelicula : gestor.getPeliculas()) {
+			if (cadaPelicula.getTitulo().equals(nombreDeLaPeliculaACambiarElGenero)) {
+				cadaPelicula.setGenero(nuevoGeneroAElegir);
+				seCambio2 = true;
+			}
+		}
+		
+		if (!seCambio2) {
+			System.out.println("El genero de la pelicula no se ha cambiado. Intente nuevamente.");
+		} else {
+			System.out.println("El genero de la pelicula se ha cambiado exitosamente.");
+		}
+	}
+
+	private static void modificarNombreDePelicula(GestorDeCine gestor) {
+		//Logica
+		mostrarPeliculasCreadas(gestor);
+		
+		teclado.nextLine(); // Limpieza de buffer
+		
+		System.out.println("\nIngrese el nombre de la pelicula a cambiar: ");
+		String nombreDeLaPeliculaACambiar = teclado.nextLine().trim();
+		
+		System.out.println("\nIngrese el nombre nuevo: ");
+		String nombreDeLaPeliculaACambiarNuevo = teclado.nextLine().trim();
+		
+		Boolean seCambio = false;
+		for (Pelicula cadaPelicula : gestor.getPeliculas()) {
+			if (cadaPelicula.getTitulo().equals(nombreDeLaPeliculaACambiar)) {
+				cadaPelicula.setTitulo(nombreDeLaPeliculaACambiarNuevo);
+				seCambio = true;
+			}
+		}
+		
+		if (!seCambio) {
+			System.out.println("La pelicula no se ha cambiado. Intente nuevamente.");
+		} else {
+			System.out.println("La pelicula se ha cambiado exitosamente.");
+		}
+	}
+
+	private static void agregarPelicula(GestorDeCine gestor) {
+		//Logica
+		// Le pedimos el nombre de la peli
+		String nombreDeLaPeliculaParaValidar;
+		boolean seValido = false;
+		teclado.nextLine(); // Limpieza de buffer
+		do {
+			System.out.println("\nIngrese el nombre de la pelicula:");
+			nombreDeLaPeliculaParaValidar = teclado.nextLine();
+			if (!nombreDeLaPeliculaParaValidar.trim().isEmpty()) {
+				seValido = true;
+				System.out.println("Se ha validado el nombre de la pelicula correctamente.");
+			} else {
+				System.out.println("Error. No puede ingresar un nombre vacio. Intente nuevamente.");
+			}
+		} while(!seValido);
+		
+		String nombreDeLaPelicula = nombreDeLaPeliculaParaValidar;
+		
+		// Le pedimos la duración de la pelicula
+		Integer duracionDeLaPeliculaParaValidar;
+		boolean seValido2 = false;
+		
+		do {
+			System.out.println("\nIngrese la duracion de la pelicula (en minutos):");
+			duracionDeLaPeliculaParaValidar = teclado.nextInt();
+			if (duracionDeLaPeliculaParaValidar > 0) {
+				seValido2 = true;
+				System.out.println("Se ha validado la duracion de la pelicula correctamente.");
+			} else {
+				System.out.println("Error. Una pelicula debe durar al menos 1 minuto. Intente nuevamente.");
+			}
+		} while(!seValido2);
+		
+		Integer duracionDeLaPelicula = duracionDeLaPeliculaParaValidar;
+		
+		// Le pedimos que elija el genero de la pelicula
+		Genero generoElegido = elegirGenero();
+		
+		// Agrupamos cada dato
+		Pelicula peliculaParaCrear = new Pelicula(nombreDeLaPelicula, duracionDeLaPelicula, generoElegido);
+		
+		Boolean seAgrego = gestor.agregarPelicula(peliculaParaCrear);
+		
+		if (!seAgrego) {
+			System.out.println("\nLa pelicula no se ha agregado. Intente nuevamente.");
+		} else {
+			System.out.println("\nLa pelicula se ha agregado exitosamente.");
+		}
+	}
+
+	private static void mostrarPeliculasCreadas(GestorDeCine gestor) {
+		System.out.println("Las peliculas creadas son: ");
+		for (Pelicula cadaPelicula : gestor.getPeliculas()) {
+			System.out.println(cadaPelicula.getTitulo() + " - " + cadaPelicula.getDuracion() + " minutos - " + cadaPelicula.getGenero());
+		}
+	}
+
+	private static Genero elegirGenero() {
+		Integer opcionGenero;
+		Genero generoElegido;
+		System.out.println("\nUsted tiene que seleccionar el genero de la pelicula");
+		do {
+			System.out.println("Seleccione una opcion");
+			System.out.println("" + Genero.obtenerOpcionesDeGenero());
+			opcionGenero = teclado.nextInt();
+			if (opcionGenero < 1 || opcionGenero > Genero.values().length) {
+				System.out.println("Error. Elija un numero correcto.");
+			}
+		} while (opcionGenero < 1 || opcionGenero > Genero.values().length);
+		
+		generoElegido = Genero.values()[opcionGenero - 1];
+		System.out.println("\nEl genero se ha elegido correctamente.");
+		return generoElegido;
 	}
 
 }
