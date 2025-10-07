@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Funcion {
 	// Terminé de agregar los atributos
+	private static Integer cantidad;
+	private Integer id;
 	private Pelicula pelicula;
 	private Sala sala;
 	private LocalDateTime fechaHora;
@@ -20,6 +22,7 @@ public class Funcion {
 		this.fechaHora = fechaHora;
 		this.precioBase = precioBase;
 		this.entradas = new ArrayList<>();
+		this.id=(++cantidad);
 	}
 
 	public Pelicula getPelicula() {
@@ -94,6 +97,10 @@ public class Funcion {
 
 	public List<Entrada> getEntradas() {
 		return entradas;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	

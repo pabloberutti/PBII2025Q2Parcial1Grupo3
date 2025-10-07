@@ -36,11 +36,9 @@ public class EntradasInterfaz {
 				mostrarMenuGestionarFunciones(gestor);
 				break;
 			case 3:
-				mostrar("Opción 3: Vender entradas");
 				mostrarMenuVenderEntradas(gestor);
 				break;
 			case 4:
-				mostrar("Opción 4: Recaudación por día");
 				mostrarMenuRecaudacionPorDia(gestor);
 				break;
 			case 5:
@@ -93,44 +91,46 @@ public class EntradasInterfaz {
 	private static void mostrarMenuVenderEntradas(GestorDeCine gestor) {
 		Integer opcion=0;
 		do{
-			mostrar("\n1. Vender entrada 2D");
-			mostrar("2. Vender entrada 3D");
-			mostrar("3. Vender entrada VIP");
-			mostrar("4. Ver entradas vendidas de una funcion");
-			mostrar("5. Volver al menu principal");
+			mostrar("\n1. Vender entrada 2D"
+			+"\n2. Vender entrada 3D"
+			+"\n3. Vender entrada VIP"
+			+"\n4. Ver entradas vendidas de una funcion"
+			+"\n5. Volver al menu principal");
 			opcion = teclado.nextInt();
 			
 			switch (opcion) {
 
 			case 1:
-				mostrar("--Vender entrada 2D--");
-				//Logica
+				mostrar("Entrada 2D");
+				Double precio=ingresarDouble("Ingrese el precio de la entrada");
+				
 				break;
 			case 2:
-				mostrar("--Vender entrada 3D--");
+				mostrar("Entrada 3D");
 				//Logica
 				break;
 			case 3:
-				mostrar("--Vender entrada VIP--");
+				mostrar("Entrada VIP");
 				//Logica
 				break;
 			case 4:
-				mostrar("--Ver entradas vendidas de una funcion--");
+				mostrar("Ver entradas vendidas de una funcion");
 				//Logica
 				break;
 			case 5:
-				mostrar("--Volviendo al menu principal--");
+				mostrar("Volviendo al menu principal...");
 				break;
 			default:
-				mostrar("Opción inválida, intente nuevamente.");
+				mostrar("Opcion invalida, intente nuevamente.");
 				break;
 			}
 
-			
+			//
 		}while(opcion != 5);
 		
 		
 	}
+
 
 	private static void mostrarMenuGestionarFunciones(GestorDeCine gestor) {
 		Integer opcion=0;
@@ -229,6 +229,10 @@ public class EntradasInterfaz {
 	private static String ingresarString(String mensaje) {
 		mostrar(mensaje);
 		return teclado.nextLine();
+	}
+	private static Double ingresarDouble(String mensaje) {
+		mostrar(mensaje);
+		return teclado.nextDouble();
 	}
 
 }
