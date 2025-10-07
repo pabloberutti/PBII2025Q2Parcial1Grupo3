@@ -141,7 +141,7 @@ public class EntradasTest {
 
 		Sala2D sala = new Sala2D(capacidad);
 
-		String tecnologiaEsperada = "Proyeccion digital 2D estandar";
+		String tecnologiaEsperada = "Proyeccion estandar";
 		String tecnologiaObtenida = sala.getTecnologia();
 		assertEquals(tecnologiaEsperada, tecnologiaObtenida);
 	}
@@ -215,7 +215,22 @@ public class EntradasTest {
 		Double precioConReglasObtenido = funcion.calcularPrecioConReglas();
 		assertEquals(precioConReglasEsperado, precioConReglasObtenido);
 	}
+	@Test
+	public void dadaQueSeCreaUnaFuncionLaMismaDebeCalcularDeFormaCorrectaElHorarioDeFinalizacion() {
+	    Integer duracionPeliculaEnMinutos = 130; 
+	    Pelicula pelicula = new Pelicula("Piratas del Caribe", duracionPeliculaEnMinutos, Genero.ACCION);
+	    Sala2D sala = new Sala2D(100);
+	    
+	    LocalDateTime fechaHoraInicio = LocalDateTime.of(2025, 10, 9, 15, 30); 
+	    
+	    Funcion funcion = new Funcion(pelicula, sala, fechaHoraInicio, 100.0);
 
+	    LocalDateTime horaFinEsperada = LocalDateTime.of(2025, 10, 9, 17, 40);
+	    
+	    LocalDateTime horaFinObtenida = funcion.getHoraFin(); 
+
+	    assertEquals(horaFinEsperada, horaFinObtenida);
+	}
 	@Test
 	public void dadoQueAgregamosPeliculasYFuncionesSeDebenGuardarCorrectamente() {
 
