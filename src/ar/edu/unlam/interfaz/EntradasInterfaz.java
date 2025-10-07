@@ -296,7 +296,7 @@ public class EntradasInterfaz {
 		Boolean seCambio = false;
 		for (Pelicula cadaPelicula : gestor.getPeliculas()) {
 			if (cadaPelicula.getTitulo().equals(nombreDeLaPeliculaACambiar)) {
-				cadaPelicula.setNombre(nombreDeLaPeliculaACambiarNuevo);
+				cadaPelicula.setTitulo(nombreDeLaPeliculaACambiarNuevo);
 				seCambio = true;
 			}
 		}
