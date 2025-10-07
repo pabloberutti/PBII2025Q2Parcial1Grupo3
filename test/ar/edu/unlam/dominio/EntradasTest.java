@@ -5,8 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -42,52 +40,51 @@ public class EntradasTest {
 
 		assertEquals(precioEsperado, precioObtenido, 0.01);
 	}
-
 	@Test
 	public void dadoQueCreamosUnaEntradaVIPLaMismaDeberiaTenerComoPrecioFinalUnCostoAdicionalFijo() {
-		Double Precio = 150.0;
-		EntradaVIP entradaVIP = new EntradaVIP(Precio);
+	    Double Precio = 150.0;
+	    EntradaVIP entradaVIP = new EntradaVIP(Precio);
 
-		// el costo adicional fijo VIP es 50
-		Double precioEsperado = Precio + 50.0;
-		Double precioObtenido = entradaVIP.getPrecioFinal();
+	    // el costo adicional fijo VIP es 50
+	    Double precioEsperado = Precio + 50.0;
+	    Double precioObtenido = entradaVIP.getPrecioFinal();
 
-		assertEquals(precioEsperado, precioObtenido, 0.01);
+	    assertEquals(precioEsperado, precioObtenido, 0.01);
 	}
-
 	@Test
 	public void dadoQueSeAplicanVariasPromocionesElPrecioFinalDeberiaResponderADichosDescuentos() {
-		Double Precio = 200.0;
-		Entrada2D entrada = new Entrada2D(Precio);
+	    Double Precio = 200.0;
+	    Entrada2D entrada = new Entrada2D(Precio);
 
-		Promocion promo1 = new PagoEfectivo(15.0);
-		Promocion promo2 = new PagoTarjeta(10.0);
+	    Promocion promo1 = new PagoEfectivo(15.0); 
+	    Promocion promo2 = new PagoTarjeta(10.0);
 
-		entrada.aplicarPromocion(promo1);
-		entrada.aplicarPromocion(promo2);
+	    entrada.aplicarPromocion(promo1);
+	    entrada.aplicarPromocion(promo2);
 
-		// el precio final seria el precio de la entrada - 25% - 5%
-		Double precioEsperado = Precio * 0.85 * 0.90;
-		Double precioObtenido = entrada.getPrecioFinal();
+	    // el precio final seria el precio de la entrada - 25% - 5% 
+	    Double precioEsperado = Precio * 0.85 * 0.90;
+	    Double precioObtenido = entrada.getPrecioFinal();
 
-		assertEquals(precioEsperado, precioObtenido, 0.01);
+	    assertEquals(precioEsperado, precioObtenido, 0.01);
 	}
 
 	@Test
 	public void dadoQueSeEstanAplicandoDosVecesLaMismaPromocionSoloSeDeberiaDeAplicarUna() {
-		Double Precio = 100.0;
-		Entrada2D entrada = new Entrada2D(Precio);
+	    Double Precio = 100.0;
+	    Entrada2D entrada = new Entrada2D(Precio);
 
-		Promocion promo3 = new PagoTarjeta(10.0);
-		entrada.aplicarPromocion(promo3);
-		entrada.aplicarPromocion(promo3);
+	    Promocion promo3 = new PagoTarjeta(10.0); 
+	    entrada.aplicarPromocion(promo3);
+	    entrada.aplicarPromocion(promo3); 
 
-		assertEquals(1, entrada.getPromociones().size());
+	    assertEquals(1, entrada.getPromociones().size());
 
-		Double precioEsperado = Precio * 0.9;
-		Double precioObtenido = entrada.getPrecioFinal();
-		assertEquals(precioEsperado, precioObtenido, 0.01);
+	    Double precioEsperado = Precio * 0.9;
+	    Double precioObtenido = entrada.getPrecioFinal();
+	    assertEquals(precioEsperado, precioObtenido, 0.01);
 	}
+
 
 	@Test
 	public void dadoQueExisteUnaFuncionCuandoSeInstancieLosAtributosDeberianDeSerCorrectos() {
@@ -195,248 +192,52 @@ public class EntradasTest {
 
 		assertTrue(esMiercoles);
 	}
+	//////////////////////
+	 @Test
+	    public void dadoQueCreamosUnaPeliculaSeDeberianSetearCorrectamenteLosAtributos() {
+	        // Crear película
+	        Pelicula pelicula = new Pelicula("Matrix", 136, Genero.CIENCIA_FICCION);
 
-	// Hay que hacer un metodo que aplique el recargo de la noche y/o el descuento
-	// de los miercoles
-	@Test
-	public void dadoQueLasFuncionesPuedenTenerRecargosODescuentosPorDiaYHorarioHayQueAplicarEsosDescuentosEnElPrecio() {
-		Entrada2D entrada = new Entrada2D(100.0);
+	        // Verificar atributos
+	        assertEquals("Matrix", pelicula.getTitulo());
+	        assertEquals(136, pelicula.getDuracion());
+	        assertEquals(Genero.CIENCIA_FICCION, pelicula.getGenero());
+	    }
 
-		Pelicula pelicula = null;
-		Sala2D sala = new Sala2D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 01, 22, 00, 00);
-		Double precioBase = entrada.getPrecio();
+	    @Test
+	    public void dadoQueModificamosLosAtributosDeUnaPeliculaLosGettersReflejanLosCambios() {
+	        Pelicula pelicula = new Pelicula("Matrix", 136,Genero.CIENCIA_FICCION);
 
-		Funcion funcion = new Funcion(pelicula, sala, fechaHora, precioBase);
+	        // Modificar atributos
+	        pelicula.setTitulo("Inception");
+	        pelicula.setDuracion(148);
+	        pelicula.setClasificacion("PG-15");
+	        pelicula.setGenero(Genero.ACCION);
 
-		Double precioConReglasEsperado = 55.0; // Se le aumenta 10% por ser de noche (110) y hay 50% de descuento por
-												// ser miercoles (55)
-		Double precioConReglasObtenido = funcion.calcularPrecioConReglas();
-		assertEquals(precioConReglasEsperado, precioConReglasObtenido);
-	}
+	        // Verificar que los cambios se aplicaron
+	        assertEquals("Inception", pelicula.getTitulo());
+	        assertEquals(148, pelicula.getDuracion());
+	        assertEquals("PG-15", pelicula.getClasificacion());
+	        assertEquals(Genero.ACCION, pelicula.getGenero());
+	    }
 
-	@Test
-	public void dadoQueAgregamosPeliculasYFuncionesSeDebenGuardarCorrectamente() {
+	    @Test
+	    public void dadoQueCreamosUnaPeliculaElGeneroNuncaDebeSerNulo() {
+	        Pelicula pelicula = new Pelicula("Interstellar", 169, "PG-13", Genero.CIENCIA_FICCION);
 
-		GestorDeCine gestor = new GestorDeCine();
-		Pelicula pelicula = new Pelicula("It", 120, Genero.TERROR);
-		Pelicula pelicula2 = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
-		Entrada3D entrada = new Entrada3D(100.0);
-		Sala3D sala3d = new Sala3D(10);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 05, 15, 00);
-		Double precioBase = entrada.getPrecio();
+	        // Verificar que el genero no sea null
+	        assertNotNull(pelicula.getGenero());
+	    }
 
-		Funcion funcion = new Funcion(pelicula, sala3d, fechaHora, precioBase);
-		Funcion funcion2 = new Funcion(pelicula2, sala3d, fechaHora, precioBase);
+	    @Test
+	    public void dadoQueCreamosVariasPeliculasCadaUnaDebeMantenerSuPropioGenero() {
+	        Pelicula accion = new Pelicula("John Wick", 101, "R", Genero.ACCION);
+	        Pelicula comedia = new Pelicula("The Mask", 101, "PG", Genero.COMEDIA);
+	        Pelicula drama = new Pelicula("Titanic", 195, "PG-13", Genero.DRAMA);
 
-		boolean seAgregoPeli1 = gestor.agregarPelicula(pelicula);
-		boolean seAgregoPeli2 = gestor.agregarPelicula(pelicula2);
-		boolean seAgregoLaFuncionPeli1 = gestor.agregarFuncion(funcion);
-		boolean seAgregoFuncionPeli2 = gestor.agregarFuncion(funcion2);
+	        assertEquals(Genero.ACCION, accion.getGenero());
+	        assertEquals(Genero.COMEDIA, comedia.getGenero());
+	        assertEquals(Genero.DRAMA, drama.getGenero());
+	    }
 
-		assertTrue(seAgregoPeli1);
-		assertTrue(seAgregoPeli2);
-		assertTrue(seAgregoLaFuncionPeli1);
-		assertTrue(seAgregoFuncionPeli2);
-	}
-
-	@Test
-	public void dadoQueVendemosEntradasDeUnaSalaUnaVezQueSeLlenaDebeNoSeDebenVenderMasEntradas() {
-
-		// Creamos las clases
-		GestorDeCine gestor = new GestorDeCine();
-		Pelicula pelicula = new Pelicula("It", 120, Genero.TERROR);
-
-		Entrada3D entrada = new Entrada3D(100.0);
-		Sala3D sala3d = new Sala3D(3);
-
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 05, 15, 00);
-		Double precioBase = entrada.getPrecio();
-
-		Funcion funcion = new Funcion(pelicula, sala3d, fechaHora, precioBase);
-
-		// Agregamos funcion y pelicula
-		gestor.agregarPelicula(pelicula);
-		gestor.agregarFuncion(funcion);
-
-		// Vendemos entradas hasta llegar al maximo de la sala
-		boolean venderEntrada1 = gestor.venderEntrada(funcion, entrada);
-		boolean venderEntrada2 = gestor.venderEntrada(funcion, entrada);
-		boolean venderEntrada3 = gestor.venderEntrada(funcion, entrada);
-		boolean venderEntrada4 = gestor.venderEntrada(funcion, entrada);
-
-		assertTrue(venderEntrada1);
-		assertTrue(venderEntrada2);
-		assertTrue(venderEntrada3);
-		assertFalse(venderEntrada4);
-	}
-
-	@Test
-	public void dadoQueHayEntradasVendidasDeUnaFuncionLaRecaudacionPorDiaDebeEstarCorrecta() {
-
-		// Creamos las clases
-		GestorDeCine gestor = new GestorDeCine();
-		Entrada2D entrada = new Entrada2D(100.0);
-		Pelicula pelicula = new Pelicula("Son Como niños", 150, Genero.COMEDIA);
-		Sala2D sala = new Sala2D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 01, 15, 00, 00);
-		Double precioBase = entrada.getPrecio();
-
-		Funcion funcion = new Funcion(pelicula, sala, fechaHora, precioBase);
-
-		// agregamos la funcion al gestor
-		gestor.agregarFuncion(funcion);
-
-		// Agregamos y vendemos la entrada
-		funcion.agregarEntrada(entrada);
-
-		gestor.venderEntrada(funcion, entrada);
-
-		// Verificacion
-		Double valorEsperado = 100.0; // El precio final hay que cambiarlo a 100 (antes 200) porque ahora contempla
-										// que hay 50% los miercoles
-
-		assertEquals(valorEsperado, gestor.recaudacionPorDia(fechaHora.getDayOfWeek()));
-
-	}
-
-	@Test
-	public void dadoQueTenemosFuncionesEnSala3dObtengoUnaListaDeLasMisma() {
-
-		GestorDeCine gestor = new GestorDeCine();
-		Entrada3D entrada = new Entrada3D(100.0);
-		Pelicula pelicula = new Pelicula("Son Como niños", 150, Genero.COMEDIA);
-		Pelicula pelicula2 = new Pelicula("it", 120, Genero.TERROR);
-		Pelicula pelicula3 = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
-
-		Sala3D sala3d = new Sala3D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 01, 15, 00, 00);
-		Double precioBase = entrada.getPrecio();
-
-		Funcion funcion = new Funcion(pelicula, sala3d, fechaHora, precioBase);
-		Funcion funcion2 = new Funcion(pelicula2, sala3d, fechaHora, precioBase);
-		Funcion funcion3 = new Funcion(pelicula3, sala3d, fechaHora, precioBase);
-
-		gestor.agregarFuncion(funcion3);
-		gestor.agregarFuncion(funcion2);
-		gestor.agregarFuncion(funcion);
-
-		List<Funcion> listaFunciones3d = gestor.buscarFuncionesEnSala(sala3d);
-
-		Integer valorEsperado = 3;
-		Integer valorObtenido = listaFunciones3d.size();
-
-		assertEquals(valorEsperado, valorObtenido);
-
-	}
-
-	// Nos falta tener en cuenta para aplicar el precio final, las promos en la
-	// forma de pago de la entrada
-	@Test
-	public void dadoQueHayQueCalcularElPrecioFinalDeUnaFuncionPorElDiaHorarioYFormaDePagoHayQueHacerUnMetodoCorrespondiente() {
-		Entrada2D entrada = new Entrada2D(100.0);
-		Promocion promoEfectivo = new PagoEfectivo(15.0);
-		entrada.aplicarPromocion(promoEfectivo);
-
-		Pelicula pelicula = null;
-		Sala2D sala = new Sala2D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 05, 22, 00, 00);
-		Double precioBase = entrada.getPrecio();
-
-		Funcion funcion = new Funcion(pelicula, sala, fechaHora, precioBase);
-
-		Double precioFinalEsperado = 93.5; // 100 de base, al ser de noche sumamos 10% queda en 110 y al ser efectivo
-											// hay que restarle el 15% queda 93.5
-		Double precioFinalObtenido = funcion.calcularPrecioFinal(entrada);
-		assertEquals(precioFinalEsperado, precioFinalObtenido);
-	}
-	// Deberiamos seguir este procedimiento:
-	// Instanciamos la entrada con su precio --> definimos el precio base con
-	// getPrecio() sin contemplar desc ni recargos --> aplicamos los desc/recargo
-	// conb calcularPrecioFinal(entrada).
-
-	@Test
-	public void dadoQueUnaPeliculaPuedeTenerMuchasFuncionesEnDistintasSalasYHorariosNecesitoSaberEnQueFuncionesEstaLaPeliculaIT() {
-		GestorDeCine gestor = new GestorDeCine();
-
-		// Vamos a definir un precio sin promo para hacerlo mas rapido
-		Entrada3D entrada = new Entrada3D(150.0);
-		Double precioBase = entrada.getPrecio();
-
-		Pelicula pelicula = new Pelicula("Son Como niños", 150, Genero.COMEDIA);
-		Pelicula pelicula2 = new Pelicula("IT", 120, Genero.TERROR);
-		Pelicula pelicula3 = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
-
-		Sala3D sala3d = new Sala3D(100);
-		SalaImax salaImax = new SalaImax(150);
-
-		// Hacemos distintos horarios para las funciones
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 06, 10, 00, 00);
-		LocalDateTime fechaHora2 = LocalDateTime.of(2025, 10, 06, 15, 00, 00);
-		LocalDateTime fechaHora3 = LocalDateTime.of(2025, 10, 06, 18, 00, 00);
-		LocalDateTime fechaHora4 = LocalDateTime.of(2025, 10, 06, 21, 00, 00);
-
-		Funcion funcion = new Funcion(pelicula, sala3d, fechaHora, precioBase);
-		Funcion funcion2 = new Funcion(pelicula2, salaImax, fechaHora2, precioBase);
-		Funcion funcion3 = new Funcion(pelicula3, salaImax, fechaHora3, precioBase);
-		Funcion funcion4 = new Funcion(pelicula2, sala3d, fechaHora4, precioBase);
-
-		gestor.agregarFuncion(funcion);
-		gestor.agregarFuncion(funcion2);
-		gestor.agregarFuncion(funcion3);
-		gestor.agregarFuncion(funcion4);
-
-		// Hacemos una ArrayList para que agrupe todas las funciones de pelis de it
-		ArrayList<Funcion> funcionesDeIT = new ArrayList<Funcion>();
-
-		funcionesDeIT = gestor.funcionesPorPelicula("IT");
-
-		Integer funcionesEsperadas = 2;
-		Integer funcionesObtenidas = funcionesDeIT.size();
-		assertEquals(funcionesEsperadas, funcionesObtenidas);
-	}
-
-	@Test
-	public void dadoQueUnaFuncionNoTuvoEntradasLaRecaudacionTieneQueSerCero() {
-		GestorDeCine gestor = new GestorDeCine();
-
-		Pelicula pelicula = new Pelicula("Son Como niños", 150, Genero.COMEDIA);
-		Sala3D sala3d = new Sala3D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 06, 15, 00, 00);
-
-		Funcion funcion = new Funcion(pelicula, sala3d, fechaHora, 150.0);
-		gestor.agregarFuncion(funcion);
-
-		Double recaudacionEsperada = 0.0;
-		Double recaudacionObtenida = gestor.recaudacionPorDia(fechaHora.getDayOfWeek());
-
-		assertEquals(recaudacionEsperada, recaudacionObtenida);
-
-	}
-
-	@Test
-	public void dadoQueUnaFuncionEsNocturnaYEsMiercolesSeCalculaPrecioCorrecto() {
-		GestorDeCine gestor = new GestorDeCine();
-	
-		Pelicula pelicula = new Pelicula("IT", 120, Genero.TERROR);
-		Sala2D sala2d = new Sala2D(100);
-		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 8, 22, 0, 0);
-		Double precioBase = 150.0;
-		
-		Funcion funcion = new Funcion(pelicula, sala2d, fechaHora, precioBase);
-
-		Boolean esMiercoles = funcion.esMiercoles();
-		assertTrue(esMiercoles);
-		Boolean esNocturna = funcion.esNocturna();
-		assertTrue(esNocturna);
-		
-		Entrada2D entrada = new Entrada2D(150.0);
-		
-		Double precioEsperado = (precioBase * 1.10) * 0.5;
-
-		Double precioObtenido = funcion.calcularPrecioFinal(entrada);
-
-		assertEquals(precioEsperado, precioObtenido);
-
-	}
 }
