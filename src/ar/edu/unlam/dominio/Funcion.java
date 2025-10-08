@@ -13,6 +13,7 @@ public class Funcion {
 	private LocalDateTime fechaHora;
 	private Double precioBase;
 	private List<Entrada> entradas;
+	private Integer id;
 
 	public Funcion(Pelicula pelicula, Sala sala, LocalDateTime fechaHora, Double precioBase) {
 		this.pelicula = pelicula;
@@ -101,6 +102,21 @@ public class Funcion {
 	    LocalDateTime horaFin = this.fechaHora.plusMinutes(duracionEnMinutos);
 
 	    return horaFin;
+	}
+
+	public boolean tieneCapacidadDisponible() {
+		 return this.entradas.size() < this.sala.getCapacidad();
+    }
+
+    @Override
+    public String toString() {
+        return "\nID: " + id 
+        + "        \nFecha y hora: "+ fechaHora
+        + "        \nSala nro: " + sala.getId();
+    }
+
+	public Integer getId() {
+		return this.id;
 	}
 
 	

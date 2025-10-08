@@ -4,6 +4,7 @@ public abstract class Sala {
 
 	Integer capacidad;
 	private String tecnologia;
+	Integer id;
 
 	public Sala(Integer capacidad, String tecnologia) {
 		this.capacidad = capacidad;
@@ -21,4 +22,8 @@ public abstract class Sala {
 	    return getTecnologia() + " -- Capacidad: " + getCapacidad();
 	    	
 	    }
+
+	public Integer getId() {
+		return this.id;
+	}
 }

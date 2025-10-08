@@ -1,9 +1,11 @@
 package ar.edu.unlam.interfaz;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
+import ar.edu.unlam.dominio.Entrada;
 import ar.edu.unlam.dominio.Funcion;
 import ar.edu.unlam.dominio.Genero;
 import ar.edu.unlam.dominio.GestorDeCine;
@@ -77,12 +79,18 @@ public class EntradasInterfaz {
 
 			case 1:
 				System.out.println("--Consultar recaudacion de un dia especifico--");
-				// Logica
-				break;
+				 int dia = ingresarInt("Ingrese el dia: ");
+	             int mes = ingresarInt("Ingrese el mes: ");
+	             int anio = ingresarInt("Ingrese el año: ");
+	             LocalDate fecha = LocalDate.of(anio, mes, dia);
+	             Double recaudacionDia = gestor.recaudacionPorDia(fecha);
+	             mostrar("Recaudacion total del dia " + fecha + ": $" + recaudacionDia);
+	             break;
 			case 2:
 				System.out.println("--Consultar recaudacion total semanal--");
-				// Logica
-				break;
+				Double totalSemana = gestor.recaudacionSemanal();
+                mostrar("Recaudacion total de la semana actual: $" + totalSemana);
+                break;
 			case 3:
 				System.out.println("--Volviendo al menu principal--");
 				break;
@@ -95,44 +103,87 @@ public class EntradasInterfaz {
 
 	}
 
-	private static void mostrarMenuVenderEntradas(GestorDeCine gestor) {
-		Integer opcion = 0;
-		do {
-			System.out.println("\n1. Vender entrada 2D");
-			System.out.println("2. Vender entrada 3D");
-			System.out.println("3. Vender entrada VIP");
-			System.out.println("4. Ver entradas vendidas de una funcion");
-			System.out.println("5. Volver al menu principal");
-			opcion = teclado.nextInt();
+	private static void mostrar(String mensaje) {
+        System.out.println(mensaje);
+    }
+	
+    private static int ingresarInt(String mensaje) {
+        mostrar(mensaje);
+        return teclado.nextInt();
+    }
 
+    private static Double ingresarDouble(String mensaje) {
+        mostrar(mensaje);
+        return teclado.nextDouble();
+    }
+
+    private static void mostrarMenuVenderEntradas(GestorDeCine gestor) {
+		Integer opcion=0;
+		do{
+			mostrar("\n1. Vender entrada"
+			+"\n2. Ver entradas vendidas de una funcion"
+			+"\n3. Volver al menu principal");
+			opcion = teclado.nextInt();
+			teclado.nextLine();
+			
 			switch (opcion) {
 
 			case 1:
-				System.out.println("--Vender entrada 2D--");
-				// Logica
+				mostrar("===VENTA DE ENTRADAS===");
+				Double precio = ingresarDouble("Ingrese el precio base de la entrada");
+
+				int tipoEntrada;
+				do {
+				    mostrar("\nSeleccione el tipo de entrada:"
+				        + "\n1. 2D (sin recargo)"
+				        + "\n2. 3D (+20%)"
+				        + "\n3. VIP (+$50)");
+				    tipoEntrada = ingresarInt("Ingrese una opci贸n: ");
+				    teclado.nextLine();
+				    if (tipoEntrada < 1 || tipoEntrada > 3) {
+				        mostrar("Error. opcion invalida.\n");
+				    }
+				} while (tipoEntrada < 1 || tipoEntrada > 3);
+				
+				
+			    // Mostrar peliculas disponibles
+			    mostrar(gestor.obtenerListaDePeliculas());
+			    Integer idPelicula = ingresarInt("Ingrewse el ID de la pelicula deseada");
+
+			    // Mostrar funciones disponibles de esa pelicula
+			    List<Funcion> funciones = gestor.obtenerFuncionesDePelicula(idPelicula);
+			    if (funciones.isEmpty()) {
+			        mostrar("No hay funciones disponibles para esa pelicula.");
+			        break;
+			    }
+			    //Muestra las funciones disponibles para dicha peliccula
+			    mostrar(gestor.listarFuncionesFiltradas(funciones));
+			    // Buscar la funci贸n seleccionada
+			    Funcion funcionSeleccionada=gestor.obtenerFuncionPorId(funciones, ingresarInt("Ingrese el id de la funcion deseada"));
+			    if (funcionSeleccionada == null) {
+			        mostrar("Funcion no encontrada.");
+			        break;
+			    }
+				if (funcionSeleccionada.tieneCapacidadDisponible()) {
+					// Crear la entrada
+					Entrada entrada = gestor.crearEntrada(precio, funcionSeleccionada,tipoEntrada);
+					// Vender (agregar) la entrada a la funci贸n
+					gestor.venderEntrada(funcionSeleccionada, entrada);
+					mostrar("Entrada vendida correctamente: $" + entrada.getPrecioFinal());
+					break;
+				}
+				mostrar("No hay mas capacidad disponible para esta funci贸n");
 				break;
 			case 2:
-				System.out.println("--Vender entrada 3D--");
-				// Logica
-				break;
-			case 3:
-				System.out.println("--Vender entrada VIP--");
-				// Logica
-				break;
-			case 4:
-				System.out.println("--Ver entradas vendidas de una funcion--");
-				// Logica
-				break;
-			case 5:
-				System.out.println("--Volviendo al menu principal--");
+				mostrar("Volviendo al menu principal...");
 				break;
 			default:
-				System.out.println("Opción inválida, intente nuevamente.");
+				mostrar("Opcion invalida, intente nuevamente.");
 				break;
 			}
-
-		} while (opcion != 5);
-
+	 }while(opcion != 2);
+		
+		
 	}
 
 	private static void mostrarMenuGestionarFunciones(GestorDeCine gestor) {
