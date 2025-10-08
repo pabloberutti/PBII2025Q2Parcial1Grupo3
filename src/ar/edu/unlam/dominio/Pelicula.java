@@ -35,4 +35,7 @@ public class Pelicula {
     public void setGenero(Genero nuevoGeneroAElegir) {
         this.genero = nuevoGeneroAElegir;
     }
+    public String toString() {
+        return titulo + " (" + duracion + " min, " + genero + ")";
+    }
 }

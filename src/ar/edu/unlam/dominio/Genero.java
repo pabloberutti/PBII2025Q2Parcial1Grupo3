@@ -3,7 +3,7 @@ package ar.edu.unlam.dominio;
 public enum Genero {
 
 	CIENCIA_FICCION("Ciencia ficcion"),
-	TERROR("Teror"),
+	TERROR("Terror"),
 	COMEDIA("Comedia"), 
 	ACCION("Accion"),
 	AVENTURA("Aventura"),

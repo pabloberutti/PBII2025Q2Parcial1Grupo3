@@ -550,5 +550,30 @@ public class EntradasTest {
 		assertEquals(peliculasCreadasEsperadas, peliculasCreadasObtenidas);
 		
 	}
-	
+	@Test
+	public void dadoQueAgregoVariasEntradasALaFuncionDebeAumentarElTotalDeEntradas() {
+		GestorDeCine gestor = new GestorDeCine();
+
+		Pelicula pelicula = new Pelicula("Rapidos y Furiosos", 120, Genero.ACCION);
+		Sala2D sala2d = new Sala2D(300);
+		LocalDateTime fechaHora = LocalDateTime.of(2025, 10, 6, 15, 0, 0);
+		Double precioBase = 100.0;
+
+		Funcion funcion = new Funcion(pelicula, sala2d, fechaHora, precioBase);
+
+		gestor.agregarFuncion(funcion);
+		
+		Entrada2D entradaUno = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaUno);
+		Entrada2D entradaDos = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaDos);
+		Entrada2D entradaTres = new Entrada2D(200.0);
+		funcion.agregarEntrada(entradaTres);
+		
+		Integer entradasEsperadas = 3;
+		Integer entradasObtenidas = funcion.getEntradas().size();
+		
+		assertEquals(entradasEsperadas, entradasObtenidas);
+		
+	}
 }

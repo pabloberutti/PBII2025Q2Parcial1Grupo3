@@ -17,5 +17,8 @@ public abstract class Sala {
 	public String getTecnologia() {
 		return this.tecnologia;
 	}
-
+	public String toString() {
+	    return getTecnologia() + " -- Capacidad: " + getCapacidad();
+	    	
+	    }
 }

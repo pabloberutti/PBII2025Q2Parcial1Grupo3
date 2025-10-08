@@ -74,4 +74,16 @@ public class GestorDeCine {
 		return peliculas;
 	}
 
+	public List<Funcion> getFunciones() {
+		return funciones;
+	}
+
+	public void setFunciones(List<Funcion> funciones) {
+		this.funciones = funciones;
+	}
+
+	public void eliminarFuncion(Funcion funcion) {
+		funciones.remove(funcion);
+	}
+
 }
