@@ -1,8 +1,12 @@
 package ar.edu.unlam.interfaz;
 
+import java.util.List;
 import java.util.Scanner;
 
+import ar.edu.unlam.dominio.Entrada;
+import ar.edu.unlam.dominio.Funcion;
 import ar.edu.unlam.dominio.GestorDeCine;
+import ar.edu.unlam.dominio.Pelicula;
 
 public class EntradasInterfaz {
 	static Scanner teclado = new Scanner(System.in);
@@ -58,11 +62,11 @@ public class EntradasInterfaz {
 	private static void mostrarMenuRecaudacionPorDia(GestorDeCine gestor) {
 		Integer opcion=0;
 		do{
-			mostrar("\n1. Consultar recaudacion de un dia especifico");
-			mostrar("2. Consultar recaudacion total semanal");
-			mostrar("3. Volver al menu principal");
+			mostrar( "\n1. Consultar recaudacion de un dia especifico"
+					+"\n2. Consultar recaudacion total semanal"
+					+"\n3. Volver al menu principal");
 			
-			opcion = teclado.nextInt();
+			opcion = ingresarInt("Ingrese una opcion");
 			
 			switch (opcion) {
 
@@ -78,7 +82,7 @@ public class EntradasInterfaz {
 				mostrar("--Volviendo al menu principal--");
 				break;
 			default:
-				mostrar("Opción inválida, intente nuevamente.");
+				mostrar("Error. Opcion invalida, intente nuevamente.");
 				break;
 			}
 
@@ -91,20 +95,50 @@ public class EntradasInterfaz {
 	private static void mostrarMenuVenderEntradas(GestorDeCine gestor) {
 		Integer opcion=0;
 		do{
-			mostrar("\n1. Vender entrada 2D"
-			+"\n2. Vender entrada 3D"
-			+"\n3. Vender entrada VIP"
-			+"\n4. Ver entradas vendidas de una funcion"
-			+"\n5. Volver al menu principal");
+			mostrar("\n1. Vender entrada"
+			+"\n2. Ver entradas vendidas de una funcion"
+			+"\n3. Volver al menu principal");
 			opcion = teclado.nextInt();
 			
 			switch (opcion) {
 
 			case 1:
-				mostrar("Entrada 2D");
-				Double precio=ingresarDouble("Ingrese el precio de la entrada");
-				
-				break;
+			    mostrar("===VENTA DE ENTRADAS===");
+			    Double precio = ingresarDouble("Ingrese el precio base de la entrada");
+
+                mostrar("\nSeleccione el tipo de entrada:"
+                + "\n1. 2D (sin recargo)"
+                + "\n2. 3D (+20%)"
+                + "\n3. VIP (+$50)");
+                int tipoEntrada = ingresarInt("Ingrese una opción: ");
+
+			    // Mostrar peliculas disponibles
+			    mostrar(gestor.obtenerListaDePeliculas());
+			    Integer idPelicula = ingresarInt("Ingrewse el ID de la pelicula deseada");
+
+			    // Mostrar funciones disponibles de esa pelicula
+			    List<Funcion> funciones = gestor.obtenerFuncionesDePelicula(idPelicula);
+			    if (funciones.isEmpty()) {
+			        mostrar("No hay funciones disponibles para esa pelicula.");
+			        break;
+			    }
+			    //Muestra las funciones disponibles para dicha peliccula
+			    mostrar(gestor.listarFuncionesFiltradas(funciones));
+			    // Buscar la función seleccionada
+			    Funcion funcionSeleccionada=gestor.obtenerFuncionPorId(funciones, ingresarInt("Ingrese el id de la funcion deseada"));
+			    if (funcionSeleccionada == null) {
+			        mostrar("Funcion no encontrada.");
+			        break;
+			    }
+				if (funcionSeleccionada.tieneCapacidadDisponible()) {
+					// Crear la entrada
+					Entrada entrada = gestor.crearEntrada(precio, funcionSeleccionada,tipoEntrada);
+					// Vender (agregar) la entrada a la función
+					gestor.venderEntrada(funcionSeleccionada, entrada);
+					mostrar("Entrada vendida correctamente: $" + entrada.getPrecioFinal());
+					break;
+				}
+				mostrar("No hay mas capacidad disponible para esta función");
 			case 2:
 				mostrar("Entrada 3D");
 				//Logica
@@ -124,8 +158,6 @@ public class EntradasInterfaz {
 				mostrar("Opcion invalida, intente nuevamente.");
 				break;
 			}
-
-			//
 		}while(opcion != 5);
 		
 		
