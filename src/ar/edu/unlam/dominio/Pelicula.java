@@ -42,6 +42,11 @@ public class Pelicula {
 	public Integer getId() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return "\nID: " + id + "   Titulo: " + titulo;
+	}
 	
 	
 	

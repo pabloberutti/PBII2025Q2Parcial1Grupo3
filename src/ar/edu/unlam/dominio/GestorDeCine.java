@@ -81,9 +81,16 @@ public class GestorDeCine {
 	public String obtenerListaDePeliculas() {
 	    String lista = "\nLISTA DE PELICULAS DISPONIBLES:\n";
 	    for (Pelicula pelicula : peliculas) {
-	        lista += "\nID: " + pelicula.getId() + "   Titulo: " + pelicula.getTitulo();
+	        lista += pelicula.toString();
 	    }
 	    return lista;
+	}
+	public String obtenerListaDeFunciones() {
+		String lista = "\nLISTA DE FUNCIONES:\n";
+		for (Funcion funcion: funciones) {
+			lista += funcion.toString();
+		}
+		return lista;
 	}
 	public List<Funcion> obtenerFuncionesDePelicula(Integer idPelicula) {
 	    List<Funcion> funcionesDePelicula = new ArrayList<>();
@@ -98,9 +105,7 @@ public class GestorDeCine {
 	public String listarFuncionesFiltradas(List<Funcion> funcionesFiltradas) {
 		String lista = "\nFUNCIONES DISPONIBLES:\n";
 	    for (Funcion funcion : funcionesFiltradas) {
-	        lista += "\nID: " + funcion.getId() 
-	        + "		\nFecha y hora: "+ funcion.getFechaHora()
-	        + "		\nSala nro: " + funcion.getSala().getId();
+	        lista += "\n"+funcion.toString();
 	    }
 	    return lista;
 	}

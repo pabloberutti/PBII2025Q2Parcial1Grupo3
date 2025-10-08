@@ -148,6 +148,7 @@ public class EntradasInterfaz {
 					break;
 				}
 				mostrar("No hay mas capacidad disponible para esta función");
+				break;
 			case 2:
 				mostrar("Entrada 3D");
 				//Logica

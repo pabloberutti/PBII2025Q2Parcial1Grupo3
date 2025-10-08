@@ -107,5 +107,12 @@ public class Funcion {
 	    return this.entradas.size() < this.sala.getCapacidad();
 	}
 
+	@Override
+	public String toString() {
+		return "\nID: " + id 
+        + "		\nFecha y hora: "+ fechaHora
+        + "		\nSala nro: " + sala.getId();
+	}
+
 
 }
