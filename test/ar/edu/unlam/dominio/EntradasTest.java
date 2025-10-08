@@ -576,4 +576,5 @@ public class EntradasTest {
 		assertEquals(entradasEsperadas, entradasObtenidas);
 		
 	}
+	
 }

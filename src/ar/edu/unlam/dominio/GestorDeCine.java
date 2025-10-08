@@ -1,6 +1,7 @@
 package ar.edu.unlam.dominio;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +25,6 @@ public class GestorDeCine {
 
 	public boolean venderEntrada(Funcion funcion, Entrada entrada) {
 		return funcion.agregarEntrada(entrada);
-	}
-
-	public Double recaudacionPorDia(DayOfWeek dia) {
-		Double totalRecaudacion = 0.0;
-
-		for (Funcion funcion : funciones) {
-			if (funcion.getFechaHora().getDayOfWeek() == dia) {
-				for (Entrada e : funcion.getEntradas()) {
-					totalRecaudacion += funcion.calcularPrecioFinal(e);
-				}
-			}
-		}
-		return totalRecaudacion;
-
 	}
 
 	public List<Funcion> buscarFuncionesEnSala(Sala sala) {
@@ -85,5 +72,113 @@ public class GestorDeCine {
 	public void eliminarFuncion(Funcion funcion) {
 		funciones.remove(funcion);
 	}
+	
+	public Double recaudacionPorDia(DayOfWeek dia) {
+		Double totalRecaudacion = 0.0;
 
+		for (Funcion funcion : funciones) {
+			if (funcion.getFechaHora().getDayOfWeek() == dia) {
+				for (Entrada e : funcion.getEntradas()) {
+					totalRecaudacion += funcion.calcularPrecioFinal(e);
+				}
+			}
+		}
+		return totalRecaudacion;
+
+	}
+	
+	// Sobrecarga con distintos parametros
+	public Double recaudacionPorDia(LocalDate fecha) {
+        Double totalRecaudacion = 0.0;
+
+        for (Funcion funcion : funciones) {
+            if (funcion.getFechaHora().toLocalDate().equals(fecha)) {
+                for (Entrada entrada : funcion.getEntradas()) {
+                    totalRecaudacion += funcion.calcularPrecioFinal(entrada);
+                }
+            }
+        }
+        return totalRecaudacion;
+    }
+	
+    public Double recaudacionSemanal() {
+        Double totalRecaudacion = 0.0;
+        LocalDate hoy = LocalDate.now();
+        LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate domingo = hoy.with(java.time.DayOfWeek.SUNDAY);
+
+        for (Funcion funcion : funciones) {
+            LocalDate fechaFuncion = funcion.getFechaHora().toLocalDate();
+            if (!fechaFuncion.isBefore(lunes) && !fechaFuncion.isAfter(domingo)) {
+                for (Entrada entrada : funcion.getEntradas()) {
+                    totalRecaudacion += funcion.calcularPrecioFinal(entrada);
+                }
+            }
+        }
+
+        return totalRecaudacion;
+    }
+    
+    public String obtenerListaDePeliculas() {
+        String lista = "\nLISTA DE PELICULAS DISPONIBLES:\n";
+        for (Pelicula pelicula : peliculas) {
+            lista += pelicula.toString();
+        }
+        return lista;
+    }
+    
+    public String obtenerListaDeFunciones() {
+        String lista = "\nLISTA DE FUNCIONES:\n";
+        for (Funcion funcion: funciones) {
+            lista += funcion.toString();
+        }
+        return lista;
+    }
+    
+    public List<Funcion> obtenerFuncionesDePelicula(Integer idPelicula) {
+        List<Funcion> funcionesDePelicula = new ArrayList<>();
+        for (Funcion funcion : funciones) {
+            if (funcion.getPelicula().getId().equals(idPelicula)&&funcion.tieneCapacidadDisponible()) {
+                funcionesDePelicula.add(funcion);
+            }
+        }
+        return funcionesDePelicula;
+    }
+
+    public String listarFuncionesFiltradas(List<Funcion> funcionesFiltradas) {
+        String lista = "\nFUNCIONES DISPONIBLES:\n";
+        for (Funcion funcion : funcionesFiltradas) {
+            lista += "\n"+funcion.toString();
+        }
+        return lista;
+    }
+    
+    public Funcion obtenerFuncionPorId(List<Funcion> funcionesFiltradas, Integer idFuncion) {
+        for (Funcion funcion : funcionesFiltradas) {
+            if (funcion.getId().equals(idFuncion)) {
+                return funcion;
+            }
+        }
+        return null;
+    }
+    
+    public Entrada crearEntrada(Double precio, Funcion funcion, Integer tipoEntrada) {
+        Entrada entrada = null;
+
+        switch (tipoEntrada) {
+            case 1:
+                entrada = new Entrada2D(precio);
+                break;
+            case 2:
+                entrada = new Entrada3D(precio);
+                break;
+            case 3:
+                entrada = new EntradaVIP(precio);
+                break;
+            default:
+                return null;
+        }
+        funcion.agregarEntrada(entrada);
+        return entrada;
+    }
 }

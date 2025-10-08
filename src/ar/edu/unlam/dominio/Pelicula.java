@@ -5,6 +5,7 @@ public class Pelicula {
     private String titulo;
     private Integer duracion;
     private Genero genero;
+    private Integer id;
 
     public Pelicula(String titulo, Integer duracion, Genero genero) {
         this.titulo = titulo;
@@ -38,4 +39,8 @@ public class Pelicula {
     public String toString() {
         return titulo + " (" + duracion + " min, " + genero + ")";
     }
+
+	public Integer getId() {
+		return this.id;
+	}
 }
