@@ -1,6 +1,7 @@
 package ar.edu.unlam.dominio;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +29,36 @@ public class GestorDeCine {
 		return funcion.agregarEntrada(entrada);
 	}
 
-	public Double recaudacionPorDia(DayOfWeek dia) {
-		Double totalRecaudacion = 0.0;
+	public Double recaudacionPorDia(LocalDate fecha) {
+	    Double totalRecaudacion = 0.0;
 
-		for (Funcion funcion : funciones) {
-			if (funcion.getFechaHora().getDayOfWeek() == dia) {
-				for (Entrada e : funcion.getEntradas()) {
-					totalRecaudacion += funcion.calcularPrecioFinal(e);
-				}
-			}
-		}
-		return totalRecaudacion;
-
+	    for (Funcion funcion : funciones) {
+	        if (funcion.getFechaHora().toLocalDate().equals(fecha)) {
+	            for (Entrada entrada : funcion.getEntradas()) {
+	                totalRecaudacion += funcion.calcularPrecioFinal(entrada);
+	            }
+	        }
+	    }
+	    return totalRecaudacion;
 	}
+	public Double recaudacionSemanal() {
+	    Double totalRecaudacion = 0.0;
+	    LocalDate hoy = LocalDate.now();
+	    LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+	    LocalDate domingo = hoy.with(java.time.DayOfWeek.SUNDAY);
+
+	    for (Funcion funcion : funciones) {
+	        LocalDate fechaFuncion = funcion.getFechaHora().toLocalDate();
+	        if (!fechaFuncion.isBefore(lunes) && !fechaFuncion.isAfter(domingo)) {
+	            for (Entrada entrada : funcion.getEntradas()) {
+	                totalRecaudacion += funcion.calcularPrecioFinal(entrada);
+	            }
+	        }
+	    }
+
+	    return totalRecaudacion;
+	}
+
 
 	public List<Funcion> buscarFuncionesEnSala(Sala sala) {
 

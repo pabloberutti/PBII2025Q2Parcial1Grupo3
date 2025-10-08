@@ -1,5 +1,6 @@
 package ar.edu.unlam.interfaz;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,7 +24,7 @@ public class EntradasInterfaz {
 			mostrar("\n1. Gestionar peliculas");
 			mostrar("2. Gestionar funciones");
 			mostrar("3. Vender entradas");
-			mostrar("4. Recaudacion por dia");
+			mostrar("4. Recaudacion por tiempo");
 			mostrar("5. Salir");
 			mostrar("\nIngrese una opcion");
 
@@ -43,7 +44,7 @@ public class EntradasInterfaz {
 				mostrarMenuVenderEntradas(gestor);
 				break;
 			case 4:
-				mostrarMenuRecaudacionPorDia(gestor);
+				mostrarMenuRecaudacionPorTiempo(gestor);
 				break;
 			case 5:
 				mostrar("Vuelva pronto!");
@@ -59,7 +60,7 @@ public class EntradasInterfaz {
 
 	}
 
-	private static void mostrarMenuRecaudacionPorDia(GestorDeCine gestor) {
+	private static void mostrarMenuRecaudacionPorTiempo(GestorDeCine gestor) {
 		Integer opcion=0;
 		do{
 			mostrar( "\n1. Consultar recaudacion de un dia especifico"
@@ -71,13 +72,18 @@ public class EntradasInterfaz {
 			switch (opcion) {
 
 			case 1:
-				mostrar("--Consultar recaudacion de un dia especifico--");
-				//Logica
-				break;
+			    int dia = ingresarInt("Ingrese el dia: ");
+			    int mes = ingresarInt("Ingrese el mes: ");
+			    int anio = ingresarInt("Ingrese el año: ");
+			    LocalDate fecha = LocalDate.of(anio, mes, dia);
+			    Double recaudacionDia = gestor.recaudacionPorDia(fecha);
+			    mostrar("Recaudacion total del dia " + fecha + ": $" + recaudacionDia);
+			    break;
+
 			case 2:
-				mostrar("--Consultar recaudacion total semanal--");
-				//Logica
-				break;
+			    Double totalSemana = gestor.recaudacionSemanal();
+			    mostrar("Recaudacion total de la semana actual: $" + totalSemana);
+			    break;
 			case 3:
 				mostrar("--Volviendo al menu principal--");
 				break;
@@ -150,17 +156,13 @@ public class EntradasInterfaz {
 				mostrar("No hay mas capacidad disponible para esta función");
 				break;
 			case 2:
-				mostrar("Ver entradas vendidas de una funcion");
-				//Logica
-				break;
-			case 3:
 				mostrar("Volviendo al menu principal...");
 				break;
 			default:
 				mostrar("Opcion invalida, intente nuevamente.");
 				break;
 			}
-		}while(opcion != 3);
+		}while(opcion != 2);
 		
 		
 	}
