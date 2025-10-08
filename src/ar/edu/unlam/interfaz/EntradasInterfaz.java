@@ -150,25 +150,17 @@ public class EntradasInterfaz {
 				mostrar("No hay mas capacidad disponible para esta función");
 				break;
 			case 2:
-				mostrar("Entrada 3D");
-				//Logica
-				break;
-			case 3:
-				mostrar("Entrada VIP");
-				//Logica
-				break;
-			case 4:
 				mostrar("Ver entradas vendidas de una funcion");
 				//Logica
 				break;
-			case 5:
+			case 3:
 				mostrar("Volviendo al menu principal...");
 				break;
 			default:
 				mostrar("Opcion invalida, intente nuevamente.");
 				break;
 			}
-		}while(opcion != 5);
+		}while(opcion != 3);
 		
 		
 	}
