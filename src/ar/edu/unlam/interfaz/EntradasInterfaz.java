@@ -99,19 +99,28 @@ public class EntradasInterfaz {
 			+"\n2. Ver entradas vendidas de una funcion"
 			+"\n3. Volver al menu principal");
 			opcion = teclado.nextInt();
+			teclado.nextLine();
 			
 			switch (opcion) {
 
 			case 1:
-			    mostrar("===VENTA DE ENTRADAS===");
-			    Double precio = ingresarDouble("Ingrese el precio base de la entrada");
+				mostrar("===VENTA DE ENTRADAS===");
+				Double precio = ingresarDouble("Ingrese el precio base de la entrada");
 
-                mostrar("\nSeleccione el tipo de entrada:"
-                + "\n1. 2D (sin recargo)"
-                + "\n2. 3D (+20%)"
-                + "\n3. VIP (+$50)");
-                int tipoEntrada = ingresarInt("Ingrese una opción: ");
-
+				int tipoEntrada;
+				do {
+				    mostrar("\nSeleccione el tipo de entrada:"
+				        + "\n1. 2D (sin recargo)"
+				        + "\n2. 3D (+20%)"
+				        + "\n3. VIP (+$50)");
+				    tipoEntrada = ingresarInt("Ingrese una opción: ");
+				    teclado.nextLine();
+				    if (tipoEntrada < 1 || tipoEntrada > 3) {
+				        mostrar("Error. opcion invalida.\n");
+				    }
+				} while (tipoEntrada < 1 || tipoEntrada > 3);
+				
+				
 			    // Mostrar peliculas disponibles
 			    mostrar(gestor.obtenerListaDePeliculas());
 			    Integer idPelicula = ingresarInt("Ingrewse el ID de la pelicula deseada");
@@ -258,10 +267,7 @@ public class EntradasInterfaz {
 		mostrar(mensaje);
 		return teclado.nextInt();
 	}
-	private static String ingresarString(String mensaje) {
-		mostrar(mensaje);
-		return teclado.nextLine();
-	}
+	
 	private static Double ingresarDouble(String mensaje) {
 		mostrar(mensaje);
 		return teclado.nextDouble();
